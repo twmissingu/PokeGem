@@ -6,7 +6,7 @@
 
 ---
 
-# PokeGem
+# PokeGem 璀璨宝石
 
 **一款精美、打磨细致的 iOS 璀璨宝石（Splendor）实现 — 获奖策略桌游的数字版。**
 
@@ -90,7 +90,7 @@ xcodebuild test -scheme PokeGem -destination 'platform=iOS Simulator,name=iPhone
    - `PokeGem/Views/` — SwiftUI 视图（主页、游戏、设置）
    - `PokeGem/AI/` — AI 策略（简单、普通、困难）
    - `PokeGem/Utilities/` — 颜色、动画、触觉反馈
-   - `PokeGemTests/` — 12 个文件，247 项测试
+   - `PokeGemTests/` — 13 个文件，247 项测试
 
 4. **关键模式**
    - MVVM + 纯函数引擎
@@ -110,13 +110,124 @@ SwiftUI Views → GameViewModel (@Observable) → GameEngine (纯函数)
 
 ## 游戏规则
 
-- **玩家**：1 个人类 + 1-3 个 AI（共 2-4 人）
-- **宝石**：每色 4/5/7 枚（2/3/4 人）+ 5 枚黄金。上限：10/人
-- **操作**：拿 3 枚不同色、2 枚同色（桌上有 ≥4）、或 1 枚。保留（最多 3 张）可获得黄金。购买使用卡牌折扣 + 黄金万能
-- **贵族**：满足卡牌颜色要求时手动招募。每回合 1 次
-- **胜利**：达到目标分数 → 完成当前轮次。平局决胜：分数 → 贵族 → 卡牌数
+### 游戏目标
 
-## 贡献指南
+成为第一个达到目标分数（默认 15 分）的玩家。
+
+### 游戏组件
+
+- **90 张发展卡**：分为 3 个等级，提供分数和宝石折扣
+- **10 张贵族卡**：每张价值 3 分
+- **宝石代币**：5 种颜色（黑、蓝、绿、红、白）+ 金色万能
+
+### 回合动作
+
+每回合选择一个动作：
+
+1. **拿取宝石**
+   - 3 个不同颜色的宝石
+   - 或 2 个相同颜色的宝石（仅当桌上该颜色 ≥4 时）
+
+2. **购买发展卡**
+   - 支付所需宝石，获得卡牌及其折扣
+
+3. **保留发展卡**
+   - 将一张卡保留（最多 3 张）
+   - 获得 1 个黄金（万能宝石）
+
+### 胜利条件
+
+当有玩家达到目标分数并完成当前轮次后，游戏结束，分数最高者获胜。平局决胜：分数 → 贵族 → 卡牌数。
+
+## 技术架构
+
+### 架构模式
+
+```
+┌─────────────────────────────────────────────────────┐
+│                     SwiftUI Views                    │
+│  HomeView → SettingsView → GameView → Components    │
+├─────────────────────────────────────────────────────┤
+│                   @Observable VM                     │
+│           GameViewModel (MainActor)                  │
+├─────────────────────────────────────────────────────┤
+│                  Pure Functions                      │
+│              GameEngine (structs)                    │
+├─────────────────────────────────────────────────────┤
+│                   Domain Models                      │
+│  GemColor | Card | CoinPurse | PlayerState          │
+└─────────────────────────────────────────────────────┘
+```
+
+### 关键技术
+
+| 特性 | 实现 |
+|------|------|
+| UI 框架 | SwiftUI (iOS 17+) |
+| 状态管理 | @Observable |
+| 并发 | async/await + Task |
+| 游戏引擎 | 纯函数 (struct) |
+| AI 策略 | 协议 + 多实现 |
+| 布局 | GeometryReader + 响应式 |
+
+### 代码结构
+
+```
+PokeGem/
+├── PokeGemApp.swift             # 生命周期入口
+├── Models/
+│   ├── GemColor.swift           # 宝石颜色枚举
+│   ├── Card.swift               # 发展卡 (90张)
+│   ├── PointCard.swift          # 贵族卡 (10张)
+│   ├── CoinPurse.swift          # 钱包管理
+│   ├── PlayerState.swift        # 玩家状态
+│   ├── PlayerAvatar.swift       # 角色头像
+│   ├── GameAction.swift         # 游戏动作
+│   ├── GameState.swift          # 游戏状态
+│   ├── GameEngine.swift         # 游戏引擎
+│   └── GameArchiver.swift       # 自动存档
+├── AI/
+│   ├── AIStrategy.swift         # AI 协议
+│   ├── EasyAIStrategy.swift     # 简单 AI
+│   ├── NormalAIStrategy.swift   # 普通 AI
+│   └── HardAIStrategy.swift     # 困难 AI
+├── ViewModels/
+│   └── GameViewModel.swift      # 游戏 VM
+├── Views/
+│   ├── Home/                    # 主页视图
+│   ├── Settings/                # 设置视图
+│   └── Game/                    # 游戏视图
+└── Utilities/
+    ├── Colors.swift             # 颜色工具
+    ├── Extensions.swift         # 扩展
+    ├── GameAnimation.swift      # 动画
+    ├── GameColors.swift         # 颜色 token
+    ├── GameFeedbackService.swift # 触觉反馈
+    └── OrientationController.swift # 横屏控制
+```
+
+## 开发指南
+
+### 添加新的 AI 策略
+
+1. 创建新文件实现 `AIStrategy` 协议
+2. 实现 `chooseAction(state:playerId:) async` 方法
+3. 在 `GameViewModel` 中注册新策略
+
+### 修改游戏规则
+
+所有游戏逻辑在 `GameEngine.swift` 中，修改 `apply(_:to:)` 方法即可。
+
+## 版本历史
+
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| 2.0 | 2026-04 | SwiftUI 重构版，iOS 17+ |
+| 1.0 | 2017-02 | 原始 Swift 3 / UIKit 版本 |
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request！
 
 1. Fork 本仓库
 2. 创建功能分支（`git checkout -b feature/amazing-feature`）
@@ -127,8 +238,3 @@ SwiftUI Views → GameViewModel (@Observable) → GameEngine (纯函数)
 ## 许可证
 
 本项目基于 MIT 许可证开源 - 详见 [LICENSE](LICENSE) 文件。
-
-## 致谢
-
-- [Splendor（璀璨宝石）](https://www.spacecowboys.fr/splendor) by Space Cowboys — 原版桌游
-- SwiftUI 社区的灵感和最佳实践

@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical
 - MVVM architecture with pure-function engine
-- 247 tests across 12 test files
+- 247 tests across 13 test files
 - Zero external dependencies
 - iOS 17+ target
 - Swift Testing framework (@Test / #expect)

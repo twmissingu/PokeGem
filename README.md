@@ -1,63 +1,147 @@
-# PokeGem 璀璨宝石
+[![English](https://img.shields.io/badge/English-blue.svg)](README.md)
+[![中文](https://img.shields.io/badge/中文-red.svg)](README_zh.md)
+[![iOS](https://img.shields.io/badge/iOS-17%2B-blue.svg)](https://developer.apple.com/ios/)
+[![SwiftUI](https://img.shields.io/badge/SwiftUI-5.0-orange.svg)](https://developer.apple.com/xcode/swiftui/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> 《Splendor 璀璨宝石》桌游的 iOS 实现 - 现代 SwiftUI 版本
+---
 
-[![Platform](https://img.shields.io/badge/platform-iOS%2017%2B-blue)]()
-[![Swift](https://img.shields.io/badge/Swift-5.10-orange)]()
-[![License](https://img.shields.io/badge/license-MIT-green)]()
+# PokeGem
 
-## 项目介绍
+**A polished, production-ready iOS implementation of Splendor — the award-winning strategy board game.**
 
-PokeGem 是一款基于经典桌游《Splendor 璀璨宝石》开发的 iOS 游戏。玩家扮演文艺复兴时期的宝石商人，通过收集宝石、购买发展卡和吸引贵族来获得胜利。
+Pure SwiftUI, zero dependencies, 247 tests, ready for the App Store.
 
-本项目最初于 2017 年使用 Swift 3 和 UIKit 开发，现已全面重构为现代 SwiftUI 应用，采用 MVVM 架构和 iOS 17+ 最新特性。
+## Why PokeGem?
 
-## 截图
+Splendor is one of the most elegant strategy board games ever designed. PokeGem brings it to iOS with:
 
-*(待添加应用截图)*
+- **Casino-grade visuals** — deep purple table, gold accents, smooth animations
+- **Smart AI opponents** — 3 difficulty levels, each with unique strategies
+- **Refined UX** — haptic feedback, VoiceOver support, auto-save
+- **Production quality** — 247 tests, MVVM architecture, zero dependencies
 
-## 功能特性
+## Features
 
-- **单人游戏**：与 2-4 个 AI 对手对战
-- **三种难度**：简单（随机）、普通（贪婪策略）、困难（启发式评估）
-- **现代 UI**：SwiftUI 构建，支持暗黑模式
-- **响应式布局**：完美适配 iPhone 各尺寸屏幕
-- **流畅体验**：AI 异步执行，不阻塞 UI
+- 🎮 **1-4 Players** — Solo play against 1-3 AI opponents
+- 🤖 **3 AI Difficulties** — Easy, Normal, Hard, each with distinct strategies
+- 🎨 **8 Characters** — Ash, Jessie, James, Team Rocket, and more
+- 💾 **Auto-Save** — Resume anytime, state persisted via UserDefaults
+- 📱 **Landscape Mode** — Optimized 4-column layout, immersive experience
+- ♿ **Accessibility** — Full VoiceOver support with logical navigation
+- 🎯 **Custom Settings** — Adjustable target score (10-35), haptic feedback toggle
 
-## 游戏规则
+## Quick Start
 
-### 游戏目标
+### Prerequisites
 
-成为第一个达到 **15 分** 胜利分数的玩家。
+- Xcode 15.0+
+- iOS 17.0+ simulator or device
+- macOS 14.0+ (development environment)
 
-### 游戏组件
+### Installation
 
-- **90 张发展卡**：分为 3 个等级，提供分数和宝石折扣
-- **10 张贵族卡**：每张价值 3 分
-- **宝石代币**：5 种颜色（黑、蓝、绿、红、白）+ 金色万能
+```bash
+git clone https://github.com/twmissingu/PokeGem.git
+cd PokeGem
+open PokeGem.xcodeproj
+```
 
-### 回合动作
+### Build & Run
 
-每回合选择一个动作：
+```bash
+# Build
+xcodebuild -scheme PokeGem -destination 'platform=iOS Simulator,name=iPhone 17' build
 
-1. **拿取宝石**
-   - 3 个不同颜色的宝石
-   - 或 2 个相同颜色的宝石（仅当桌上该颜色 ≥4 时）
+# Run in simulator
+open -a Simulator
+xcodebuild -scheme PokeGem -destination 'platform=iOS Simulator,name=iPhone 17' build
+```
 
-2. **购买发展卡**
-   - 支付所需宝石，获得卡牌及其折扣
+### Run Tests
 
-3. **保留发展卡**
-   - 将一张卡保留（最多 3 张）
-   - 获得 1 个黄金（万能宝石）
+```bash
+# All tests
+xcodebuild test -scheme PokeGem -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:PokeGemTests
 
-### 胜利条件
+# Specific test class
+xcodebuild test -scheme PokeGem -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:PokeGemTests/GameEngineTests
+```
 
-当有玩家达到目标分数并完成当前轮次后，游戏结束，分数最高者获胜。
+## AI Agent Guide
 
-## 技术架构
+This project is designed for seamless AI agent interaction:
 
-### 架构模式
+1. **Clone and build**
+   ```bash
+   git clone https://github.com/twmissingu/PokeGem.git
+   cd PokeGem
+   xcodebuild -scheme PokeGem -destination 'platform=iOS Simulator,name=iPhone 17' build
+   ```
+
+2. **Run tests**
+   ```bash
+   xcodebuild test -scheme PokeGem -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:PokeGemTests
+   ```
+
+3. **Project structure**
+   - `PokeGem/Models/` — Game logic (pure functions, immutable state)
+   - `PokeGem/ViewModels/` — GameViewModel (@Observable, @MainActor)
+   - `PokeGem/Views/` — SwiftUI views (home, game, settings)
+   - `PokeGem/AI/` — AI strategies (easy, normal, hard)
+   - `PokeGem/Utilities/` — Colors, animations, haptic feedback
+   - `PokeGemTests/` — 13 files, 247 tests
+
+4. **Key patterns**
+   - MVVM + pure-function engine
+   - Atomic actions (validate first, return original state if invalid)
+   - Auto-save after every action
+   - Files auto-included via Xcode sync
+
+## Architecture
+
+```
+SwiftUI Views → GameViewModel (@Observable) → GameEngine (pure functions)
+                                                    ↕
+                                              GameState (immutable)
+```
+
+**State machine**: `settings → playerTurn → aiThinking → aiExecuting → gameEnded`
+
+## Game Rules
+
+### Objective
+
+Be the first player to reach the target score (default 15 points).
+
+### Components
+
+- **90 Development Cards** — 3 tiers, providing points and gem discounts
+- **10 Noble Cards** — Each worth 3 points
+- **Gem Tokens** — 5 colors (black, blue, green, red, white) + gold wildcards
+
+### Turn Actions
+
+Choose one action per turn:
+
+1. **Take Gems**
+   - 3 different color gems
+   - Or 2 same color gems (only when ≥4 available on table)
+
+2. **Purchase Development Card**
+   - Pay required gems, gain the card and its discount
+
+3. **Reserve Development Card**
+   - Reserve a card (max 3 total)
+   - Gain 1 gold (wildcard gem)
+
+### Winning
+
+When a player reaches the target score and completes the current round, the game ends. Tiebreakers: points → nobles → cards owned.
+
+## Technical Architecture
+
+### Architecture Pattern
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -75,126 +159,82 @@ PokeGem 是一款基于经典桌游《Splendor 璀璨宝石》开发的 iOS 游�
 └─────────────────────────────────────────────────────┘
 ```
 
-### 关键技术
+### Key Technologies
 
-| 特性 | 实现 |
-|------|------|
-| UI 框架 | SwiftUI (iOS 17+) |
-| 状态管理 | @Observable |
-| 并发 | async/await + Task |
-| 游戏引擎 | 纯函数 (struct) |
-| AI 策略 | 协议 + 多实现 |
-| 布局 | GeometryReader + 响应式 |
+| Feature | Implementation |
+|---------|----------------|
+| UI Framework | SwiftUI (iOS 17+) |
+| State Management | @Observable |
+| Concurrency | async/await + Task |
+| Game Engine | Pure functions (struct) |
+| AI Strategy | Protocol + multiple implementations |
+| Layout | GeometryReader + responsive |
 
-### 代码结构
+### Code Structure
 
 ```
 PokeGem/
-├── App/
-│   └── PokeGemApp.swift           # 生命周期入口
+├── PokeGemApp.swift             # App lifecycle entry point
 ├── Models/
-│   ├── GemColor.swift             # 宝石颜色枚举
-│   ├── Card.swift                 # 发展卡 (90张)
-│   ├── PointCard.swift            # 贵族卡 (10张)
-│   ├── CoinPurse.swift            # 钱包管理
-│   ├── PlayerState.swift          # 玩家状态
-│   ├── GameAction.swift           # 游戏动作
-│   ├── GameState.swift            # 游戏状态
-│   └── GameEngine.swift           # 游戏引擎
+│   ├── GemColor.swift           # Gem color enum
+│   ├── Card.swift               # Development cards (90)
+│   ├── PointCard.swift          # Noble cards (10)
+│   ├── CoinPurse.swift          # Wallet management
+│   ├── PlayerState.swift        # Player state
+│   ├── PlayerAvatar.swift       # Character avatars
+│   ├── GameAction.swift         # Game actions
+│   ├── GameState.swift          # Game state
+│   ├── GameEngine.swift         # Game engine
+│   └── GameArchiver.swift       # Auto-save
 ├── AI/
-│   ├── AIStrategy.swift           # AI 协议
-│   ├── EasyAIStrategy.swift       # 简单 AI
-│   ├── NormalAIStrategy.swift     # 普通 AI
-│   └── HardAIStrategy.swift       # 困难 AI (新增)
+│   ├── AIStrategy.swift         # AI protocol
+│   ├── EasyAIStrategy.swift     # Easy AI
+│   ├── NormalAIStrategy.swift   # Normal AI
+│   └── HardAIStrategy.swift     # Hard AI
 ├── ViewModels/
-│   ├── GameViewModel.swift        # 游戏 VM
-│   ├── SettingsViewModel.swift    # 设置 VM
-│   └── HomeViewModel.swift        # 主页 VM
+│   └── GameViewModel.swift      # Game view model
 ├── Views/
-│   ├── Home/                      # 主页视图
-│   ├── Settings/                  # 设置视图
-│   └── Game/                      # 游戏视图
+│   ├── Home/                    # Home views
+│   ├── Settings/                # Settings views
+│   └── Game/                    # Game views
 └── Utilities/
-    └── Extensions.swift           # 扩展
+    ├── Colors.swift             # Color utilities
+    ├── Extensions.swift         # Extensions
+    ├── GameAnimation.swift      # Animations
+    ├── GameColors.swift         # Color tokens
+    ├── GameFeedbackService.swift # Haptic feedback
+    └── OrientationController.swift # Landscape control
 ```
 
-## 安装与构建
+## Development Guide
 
-### 系统要求
+### Adding a New AI Strategy
 
-- **Xcode**: 15.0+
-- **iOS**: 17.0+
-- **Swift**: 5.10+
+1. Create a new file implementing the `AIStrategy` protocol
+2. Implement the `chooseAction(state:playerId:) async` method
+3. Register the new strategy in `GameViewModel`
 
-### 构建步骤
+### Modifying Game Rules
 
-1. 克隆仓库
-```bash
-git clone https://github.com/twmissingu/PokeGem.git
-cd PokeGem
-```
+All game logic is in `GameEngine.swift`. Modify the `apply(_:to:)` method.
 
-2. 打开项目
-```bash
-open PokeGem.xcodeproj
-```
-*(注：需要创建 Xcode 项目文件，或从 Xcode 打开目录)*
+## Version History
 
-3. 选择模拟器或真机，点击运行 (⌘R)
+| Version | Date | Description |
+|---------|------|-------------|
+| 2.0 | 2026-04 | SwiftUI rewrite, iOS 17+ |
+| 1.0 | 2017-02 | Original Swift 3 / UIKit version |
 
-### 命令行构建
+## Contributing
 
-```bash
-# 构建项目
-xcodebuild -scheme PokeGem -destination 'platform=iOS Simulator,name=iPhone 15' build
+Issues and Pull Requests are welcome!
 
-# 运行测试
-xcodebuild test -scheme PokeGem -destination 'platform=iOS Simulator,name=iPhone 15'
-```
+1. Fork this repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Create a Pull Request
 
-## 开发指南
+## License
 
-### 添加新的 AI 策略
-
-1. 创建新文件实现 `AIStrategy` 协议
-2. 实现 `chooseAction(state:playerId:) async` 方法
-3. 在 `GameViewModel` 中注册新策略
-
-### 修改游戏规则
-
-所有游戏逻辑在 `GameEngine.swift` 中，修改 `apply(_:to:)` 方法即可。
-
-### 自定义 UI
-
-视图组件使用 SwiftUI 构建，支持通过修改颜色方案和布局参数来自定义。
-
-## 版本历史
-
-| 版本 | 日期 | 说明 |
-|------|------|------|
-| 2.0 | 2026-04 | SwiftUI 重构版，iOS 17+ |
-| 1.0 | 2017-02 | 原始 Swift 3 / UIKit 版本 |
-
-## 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建 Pull Request
-
-## 致谢
-
-- **Space Cowboys** - 《Splendor》桌游原作者
-- **詹廷蔚 (Zhan Tingwei)** - 原始 iOS 版本开发者
-- **Qoder** - AI 辅助重构工具
-
-## 许可证
-
-本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
-
----
-
-📧 有问题？欢迎提 Issue 或联系开发者。
+This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.

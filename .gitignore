@@ -54,6 +54,7 @@ DerivedData/
 ## IDE configs
 .vscode/
 .qoder/
+.claude/
 
 ## Large binary files (archive only)
 CardGame.zip
