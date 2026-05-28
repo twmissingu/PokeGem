@@ -1,0 +1,23 @@
+{
+  "images": [
+    {
+      "filename": "avatar_jessie.png",
+      "idiom": "universal",
+      "scale": "1x"
+    },
+    {
+      "filename": "avatar_jessie@2x.png",
+      "idiom": "universal",
+      "scale": "2x"
+    },
+    {
+      "filename": "avatar_jessie@3x.png",
+      "idiom": "universal",
+      "scale": "3x"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  }
+}
